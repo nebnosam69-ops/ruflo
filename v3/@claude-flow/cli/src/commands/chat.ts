@@ -287,7 +287,7 @@ async function runInteractive(prov: ProviderEntry, msgs: Message[], sid: string,
   process.stdout.write(output.dim('  /help for commands · /exit to quit\n'));
   process.stdout.write(output.dim('  ' + '─'.repeat(54)) + '\n\n');
 
-  const ask = () => rl.question(output.bold(output.cyan('You')) + output.dim(': '), handle);
+  const ask = () => rl.question(output.bold(output.color('You', 'cyan')) + output.dim(': '), handle);
 
   const handle = async (raw: string) => {
     const line = raw.trim();
@@ -317,7 +317,7 @@ async function runInteractive(prov: ProviderEntry, msgs: Message[], sid: string,
           process.stdout.write('\n');
           for (const m of msgs) {
             if (m.role === 'system') { process.stdout.write(output.dim('  [system] ' + m.content.slice(0,80)) + '\n'); continue; }
-            const lbl = m.role === 'user' ? output.cyan('  You') + output.dim(': ') : output.green('  AI') + output.dim(':  ');
+            const lbl = m.role === 'user' ? output.color('  You', 'cyan') + output.dim(': ') : output.color('  AI', 'green') + output.dim(':  ');
             process.stdout.write(lbl + (m.content.length > 120 ? m.content.slice(0,120) + '…' : m.content) + '\n');
           }
           process.stdout.write('\n'); break;
@@ -393,7 +393,7 @@ async function runInteractive(prov: ProviderEntry, msgs: Message[], sid: string,
 
     // Normal message
     msgs.push({ role: 'user', content: line });
-    process.stdout.write('\n' + output.bold(output.green('AI')) + output.dim(':  '));
+    process.stdout.write('\n' + output.bold(output.color('AI', 'green')) + output.dim(':  '));
 
     try {
       let reply = '';

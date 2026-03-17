@@ -226,8 +226,9 @@ const addCommand: Command = {
     const apiKey  = ctx.flags.key   as string | undefined;
     const doTest  = ctx.flags.test  !== false;
 
-    if (!['custom', 'litellm'].includes(type)) {
-      output.printError(`--type must be "custom" or "litellm", got: ${type}`);
+    const validTypes = ['custom', 'litellm', 'ollama', 'anthropic', 'openai', 'google', 'cohere'];
+    if (!validTypes.includes(type)) {
+      output.printError(`--type must be one of: ${validTypes.join(', ')}. Got: ${type}`);
       return { success: false, exitCode: 1 };
     }
 
