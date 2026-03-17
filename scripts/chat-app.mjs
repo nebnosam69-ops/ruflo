@@ -17,6 +17,7 @@ import { createServer }     from 'node:http';
 import { readFileSync }      from 'node:fs';
 import { resolve, dirname }  from 'node:path';
 import { fileURLToPath }     from 'node:url';
+import os                    from 'node:os';
 
 const PORT       = parseInt(process.env.PORT       || '3000', 10);
 const OLLAMA_URL = process.env.OLLAMA_URL           || 'http://localhost:11434';
@@ -634,13 +635,24 @@ const server = createServer(async (req, res) => {
   }
 });
 
+function getLocalIP() {
+  for (const ifaces of Object.values(os.networkInterfaces())) {
+    for (const iface of ifaces) {
+      if (iface.family === 'IPv4' && !iface.internal) return iface.address;
+    }
+  }
+  return 'localhost';
+}
+
 server.listen(PORT, '0.0.0.0', () => {
+  const localIP = getLocalIP();
   console.log('');
-  console.log('  ╔══════════════════════════════════╗');
-  console.log(`  ║   RuFlo Chat  →  http://localhost:${PORT}  ║`);
-  console.log(`  ║   Model: ${MODEL.padEnd(23)}║`);
-  console.log(`  ║   Ollama: ${OLLAMA_URL.padEnd(22)}║`);
-  console.log('  ╚══════════════════════════════════╝');
+  console.log('  ╔══════════════════════════════════════════╗');
+  console.log(`  ║  RuFlo Chat  →  http://localhost:${PORT}       ║`);
+  console.log(`  ║  Phone/LAN  →  http://${localIP}:${PORT}  ║`);
+  console.log(`  ║  Model: ${MODEL.padEnd(32)}║`);
+  console.log(`  ║  Ollama: ${OLLAMA_URL.padEnd(31)}║`);
+  console.log('  ╚══════════════════════════════════════════╝');
   console.log('');
   console.log('  Ctrl+C to stop');
   console.log('');
