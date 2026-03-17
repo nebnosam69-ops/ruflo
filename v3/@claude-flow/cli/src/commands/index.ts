@@ -70,6 +70,8 @@ const commandLoaders: Record<string, CommandLoader> = {
   guidance: () => import('./guidance.js'),
   // RVFA Appliance Management
   appliance: () => import('./appliance.js'),
+  // Interactive LLM Chat
+  chat: () => import('./chat.js'),
 };
 
 // Cache for loaded commands
@@ -146,6 +148,7 @@ import updateCommand from './update.js';
 import { processCommand } from './process.js';
 import { guidanceCommand } from './guidance.js';
 import { applianceCommand } from './appliance.js';
+import { chatCommand } from './chat.js';
 
 // Pre-populate cache with core commands
 loadedCommands.set('init', initCommand);
@@ -167,6 +170,7 @@ loadedCommands.set('security', securityCommand);
 loadedCommands.set('ruvector', ruvectorCommand);
 loadedCommands.set('hive-mind', hiveMindCommand);
 loadedCommands.set('guidance', guidanceCommand);
+loadedCommands.set('chat', chatCommand);
 
 // =============================================================================
 // Exports (maintain backwards compatibility)
